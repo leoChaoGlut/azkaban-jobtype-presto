@@ -1,0 +1,10 @@
+nodes:
+  - name: jobA
+    type: presto
+    config:
+      presto_jdbc_url: jdbc:presto://hdp00:10100/hive/default
+      presto_jdbc_user: root
+      git_project_id: 389
+      git_file_path: dataworkflow-sql/test/b.sql
+      git_branch: feature_arch
+      git_token: ysf2sNhjkhxSbrYSRUEm
