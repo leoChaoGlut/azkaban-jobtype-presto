@@ -14,8 +14,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class GitHttpUtil {
-    private static final String URL_TMPL = "https://gitlab.com/api/v4/projects/%s/repository/files/%s/raw?ref=%s";
+    private static final String URL_TMPL = "https://%s/api/v4/projects/%s/repository/files/%s/raw?ref=%s";
 
+    public static final String KEY_GIT_HOST = "git_host";
     public static final String KEY_GIT_PROJECT_ID = "git_project_id";
     public static final String KEY_GIT_FILE_PATH = "git_file_path";
     public static final String KEY_GIT_BRANCH = "git_branch";
@@ -23,18 +24,20 @@ public class GitHttpUtil {
 
 
     public static String getRaw(Props props) throws IOException {
+        String gitHost = props.getString(KEY_GIT_HOST);
         String gitProjectId = props.getString(KEY_GIT_PROJECT_ID);
         String gitFilePath = props.getString(KEY_GIT_FILE_PATH);
         String gitBranch = props.getString(KEY_GIT_BRANCH);
         String gitToken = props.getString(KEY_GIT_TOKEN);
 
-        return getRaw(gitProjectId, gitFilePath, gitBranch, gitToken);
+        return getRaw(gitHost, gitProjectId, gitFilePath, gitBranch, gitToken);
     }
 
-    public static String getRaw(String projectId, String filePath, String branch, String token) throws IOException {
+    public static String getRaw(String host, String projectId, String filePath, String branch, String token) throws IOException {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         String url = String.format(
                 URL_TMPL,
+                host,
                 projectId,
                 URLEncoder.encode(filePath, StandardCharsets.UTF_8.name()),
                 branch
